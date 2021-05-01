@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo App</title>
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+</head>
+<body>
+    <div id="app">
+        <div class="content">
+            <h1 class="tag is-black is-large" style="width: 100%;">ToDo App</h1>
+        </div>
+        <div class="box">
+            <table v-if="allTasks.length" class="table">
+                <thead>
+                  <tr>
+                      <th>Status</th>
+                      <th>Task Description</th>
+                      <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <tr v-for='task in allTasks' :id="task.id">
+                        <td><input v-model="task.completed" type="checkbox" @change="save(task.id)"></td>
+                        <td v-if="editId !== task.id" :class="task.completed ? 'strike': ''">[[task.title]]</td>
+                        <td v-else><input type="text" v-model="task.title"></td>
+                        <td>
+                            <div v-if="editId !== task.id">
+                              {% csrf_token %}
+                              <img class="options" src="{% static 'images/edit.png' %}" @click="editMode(task.id)">
+                              <img class="options" src="{% static 'images/trash.png' %}" @click="deleteTask(task.id)">
+                            </div>
+                            <div v-else>
+                              <img class="options" src="{% static 'images/checked.png' %}" @click="save(task.id)">
+                              <img class="options" src="{% static 'images/close.png' %}" @click="cancel(task.id)">
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <span v-else class="title is-3">Great! You have no pending Todo's</span>
+              <hr>
+              <span v-if="!newTask" class="button is-light" @click="toggleAddTask()"><strong>+ADD</strong></span>
+              <span v-if="newTask" class="button is-danger" @click="toggleAddTask()" style="border-radius: 24px;"><strong>X</strong></span>
+              <input v-if="newTask" type="text" placeholder="Add new Todo!" v-model="newTaskValue" style="width: 30%; height: 40px; margin-left: 2%; border-radius: 24px;">
+              <span v-if="newTask" class="button is-light is-success" @click="submitNewTask()">Submit</span>
+        </div>
+    </div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css">
+<script src="{% static 'js/index.js' %}"></script>
+</html>

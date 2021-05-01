@@ -1,0 +1,28 @@
+html, body{
+    background: whitesmoke;
+    height: 100%;
+}
+
+.options {
+    width: 15px;
+    height: auto;
+}
+
+.box {
+    text-align: center;
+    width: 90%;
+    margin: auto;
+}
+
+.content {
+    text-align: center;
+}
+
+.table {
+    width: 90%;
+    margin: auto;
+}
+
+.strike {
+    text-decoration: line-through;
+}
